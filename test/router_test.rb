@@ -45,13 +45,34 @@ class RouterTest < Test::Unit::TestCase
   end
   
   test "template determined from template file" do
-    r1 = router('/about')
+    r1 = router('/about', './views')
     r1.expects(:template_file).at_least_once.returns('./views/about.html.erb')
     assert_equal :'about.html', r1.template
     
-    r2 = router('/about/nothing.html')
+    r2 = router('/about/nothing.html', './views')
     r2.expects(:template_file).at_least_once.returns('./views/about/nothing.html.erb')
-    assert_equal :'nothing.html', r2.template
+    assert_equal :'about/nothing.html', r2.template
+  end
+  
+  test "layout for html format and presense of layout file" do
+    r = router('/about', './views')
+    r.expects(:template_file).returns('./views/about.html.erb')
+    File.expects(:exists?).with('./views/layout.html.erb').returns(true)
+    
+    assert_equal :'layout.html', r.layout
+  end
+  
+  test "layout is false when no layout file is found" do
+    r = router('/about', './views')
+    r.expects(:template_file).returns('./views/about.html.erb')
+    File.expects(:exists?).with('./views/layout.html.erb').returns(false)
+    
+    assert_equal false, r.layout
+  end
+  
+  test "layout is false with non-html format" do
+    r = router('/people.csv', './views')
+    assert_equal false, r.layout
   end
   
   test "success when template file found" do

@@ -26,7 +26,15 @@ module Copy
     end
     
     def template
-      @template ||= template_file.split('/').last.gsub(%r{.#{renderer}$}, '').to_sym
+      @template ||= template_file.gsub(%r{^#{@views}\/*}, '').gsub(%r{.#{renderer}$}, '').to_sym
+    end
+    
+    def layout
+      @layout ||= if format == :html && File.exists?(File.join(@views, "layout.html.#{renderer}"))
+        :'layout.html'
+      else
+        false
+      end
     end
     
     def success?
