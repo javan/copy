@@ -1,16 +1,21 @@
-require 'mongo_mapper'
+require 'uri'
 
 module Copy
-  class Storage
-    def self.connect!(mongo_url = ENV['MONGOHQ_URL'])
-      if mongo_url
-        MongoMapper.config = { ENV['RACK_ENV'] => { 'uri' => mongo_url } }
-      else
-        MongoMapper.config = { ENV['RACK_ENV'] => { 'uri' => 'mongodb://localhost/copy'} }
-      end
-
-      MongoMapper.connect(ENV['RACK_ENV'])
-      Copy::Content.ensure_index [[:name, 1]], :unique => true
+  module Storage
+    autoload :Mongodb, 'copy/storage/mongodb'
+    autoload :Redis,   'copy/storage/redis'
+    
+    def self.connect!(connection_url)
+      uri = URI.parse(connection_url)
+      @@storage = Copy::Storage.const_get(uri.scheme.capitalize).new(connection_url)
+    end
+    
+    def self.get(name)
+      @@storage.get(name)
+    end
+    
+    def self.set(name, content)
+      @@storage.set(name, content)
     end
   end
 end
