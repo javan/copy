@@ -5,7 +5,9 @@ module Copy
     class Relational
       class Document
         include DataMapper::Resource
-
+        
+        storage_names[:default] = 'copy_documents'
+    
         property :id,         Serial
         property :name,       String, :unique_index => true
         property :content,    Text  
