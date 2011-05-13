@@ -8,13 +8,18 @@ module Copy
     set :public, './public'
     
     helpers do
+      def set_cache_control_header
+        if settings.respond_to?(:cache_time) && settings.cache_time.is_a?(Numeric) && settings.cache_time > 0
+          expires settings.cache_time, :public
+        else
+          cache_control :no_cache
+        end
+      end
+      
       def copy(name, &block)
-        if content = Copy::Content.find(:name => name)
-          if template && template.respond_to?(:is_haml?) && template.is_haml?
-            template.haml_concat(content)
-          else
-            @_out_buf << content
-          end
+        if content = Copy::Content.find_by_name(name.to_s)
+          # TODO: support haml here
+          @_out_buf << content.body
         else
           # Render the default text in the block
           block.call if block_given?
@@ -33,9 +38,11 @@ module Copy
     get '*' do
       route = Copy::Router.new(params[:splat].to_s, settings.views)
       if route.success?
+        set_cache_control_header
+        content_type(route.format)
         send(route.renderer, route.template, :layout => route.layout)
       else
-        halt 404
+        not_found
       end
     end
   end
