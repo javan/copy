@@ -7,9 +7,9 @@ module Copy
       def initialize(connection_url)
         uri         = URI.parse(connection_url)
         connection  = ::Mongo::Connection.from_uri(connection_url)
-        database    = conn.db(uri.path.gsub(/^\//, ''))
+        database    = connection.db(uri.path.gsub(/^\//, ''))
         
-        @collection = db['copy-content']
+        @collection = database['copy-content']
         @collection.ensure_index([['name', Mongo::ASCENDING]], :unique => true)
         @collection
       end
