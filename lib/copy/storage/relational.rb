@@ -20,7 +20,8 @@ module Copy
       end
       
       def get(name)
-        Document.first(:name => name)
+        doc = Document.first(:name => name)
+        doc.content unless doc.nil?
       end
       
       def set(name, content)
