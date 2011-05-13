@@ -2,12 +2,17 @@ require 'uri'
 
 module Copy
   module Storage
-    autoload :Mongodb, 'copy/storage/mongodb'
-    autoload :Redis,   'copy/storage/redis'
+    autoload :Mongodb,    'copy/storage/mongodb'
+    autoload :Redis,      'copy/storage/redis'
+    autoload :Relational, 'copy/storage/relational'
     
     def self.connect!(connection_url)
-      uri = URI.parse(connection_url)
-      @@storage = Copy::Storage.const_get(uri.scheme.capitalize).new(connection_url)
+      scheme = URI.parse(connection_url).scheme
+      klass  = scheme.capitalize
+      if %w(sqlite mysql postgres).include?(scheme)
+        klass = 'Relational'
+      end
+      @@storage = Copy::Storage.const_get(klass).new(connection_url)
     end
     
     def self.get(name)
