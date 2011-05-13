@@ -29,7 +29,7 @@ class ServerTest < Test::Unit::TestCase
   end
   
   test "GET path to template in folder" do
-    %w(/about/us /about/us).each do |path|
+    %w(/about/us /about/us/).each do |path|
       get path
       
       assert last_response.ok?

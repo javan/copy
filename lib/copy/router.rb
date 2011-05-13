@@ -46,7 +46,8 @@ module Copy
         if path == '/'
           '/index'
         else
-          path
+          # Remove trailing slash, if present
+          path.strip.gsub(/\/$/, '')
         end
       end
       

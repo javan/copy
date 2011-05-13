@@ -28,6 +28,19 @@ class RouterTest < Test::Unit::TestCase
     assert_equal './views/about/index.html.erb', router('/about', './views').template_file
   end
   
+  test "find template file as index in dir when path has trailing slash" do
+    Dir.expects(:glob).with('./views/about/us.html*').returns([])
+    Dir.expects(:glob).with('./views/about/us/index.html*').returns(['./views/about/us/index.html.erb'])
+    
+    assert_equal './views/about/us/index.html.erb', router('/about/us/', './views').template_file
+  end
+  
+  test "find template file in dir when path has trailing slash" do
+    Dir.expects(:glob).with('./views/about/us.html*').returns(['./views/about/us.html.erb'])
+    
+    assert_equal './views/about/us.html.erb', router('/about/us/', './views').template_file
+  end
+  
   test "find index template file when empty path given" do
     Dir.expects(:glob).with('./views/index.html*').returns(['./views/index.html.erb'])
     
