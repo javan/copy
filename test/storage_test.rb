@@ -1,5 +1,8 @@
 require 'test_helper'
 
+# Maybe TODO: Should the tests require a running redis, mongo, mysql
+# instance and actually test getting, setting data?
+
 class StorageTest < Test::Unit::TestCase
   test "mongodb connect!" do
     connection_url ='mongodb://copy:secret@localhost/copy-content'
