@@ -1,0 +1,18 @@
+<style type="text/css" media="screen">
+  #_copy * {
+    font-family: monaco;
+  }
+  
+  #_copy textarea {
+    height: 300px;
+    width: 500px;
+  }
+</style>
+
+<% if @doc %>
+  <div id="_copy">
+    <textarea name="content"><%= @doc %></textarea>
+  </div>
+<% else %>
+  <p>Couldn't find that one</p>
+<% end %>
