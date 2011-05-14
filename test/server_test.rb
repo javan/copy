@@ -69,4 +69,30 @@ class ServerTest < Test::Unit::TestCase
     assert_equal 'application/xml;charset=utf-8', last_response.headers['Content-Type']
     assert_equal File.read(app.settings.views + '/data/people.xml.erb'), last_response.body
   end
+  
+  test "copy helper displays content from storage" do
+    Copy::Storage.expects(:connected?).returns(true)
+    Copy::Storage.expects(:get).with(:facts).returns("truth")
+    
+    get 'with_copy_helper'
+    assert last_response.ok?
+    assert_match "truth", last_response.body
+  end
+  
+  test "copy helper shows default text when content is not in storage" do
+    Copy::Storage.expects(:connected?).returns(true)
+    Copy::Storage.expects(:get).with(:facts).returns(nil)
+    
+    get 'with_copy_helper'
+    assert last_response.ok?
+    assert_match "Default Text", last_response.body
+  end
+  
+  test "copy helper shows default text when not connected" do
+    Copy::Storage.expects(:connected?).returns(false)
+    
+    get 'with_copy_helper'
+    assert last_response.ok?
+    assert_match "Default Text", last_response.body
+  end
 end

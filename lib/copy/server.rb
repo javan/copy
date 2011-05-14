@@ -17,9 +17,9 @@ module Copy
       end
       
       def copy(name, &block)
-        if content = Copy::Content.find_by_name(name.to_s)
+        if Copy::Storage.connected? && (content = Copy::Storage.get(name))
           # TODO: support haml here
-          @_out_buf << content.body
+          @_out_buf << content
         else
           # Render the default text in the block
           block.call if block_given?

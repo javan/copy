@@ -15,12 +15,16 @@ module Copy
       @@storage = Copy::Storage.const_get(klass).new(connection_url)
     end
     
+    def self.connected?
+      ! @@storage.nil?
+    end
+    
     def self.get(name)
-      @@storage.get(name)
+      @@storage.get(name.to_s)
     end
     
     def self.set(name, content)
-      @@storage.set(name, content)
+      @@storage.set(name.to_s, content)
     end
   end
 end
