@@ -5,7 +5,11 @@ class ServerTest < Test::Unit::TestCase
   include Rack::Test::Methods
   
   def app
-    Copy::Server.config do
+    Copy::Server
+  end
+  
+  setup do
+    app.config do
       set :views, File.dirname(File.expand_path(__FILE__)) + '/sample_app/views'
     end
   end
@@ -70,8 +74,16 @@ class ServerTest < Test::Unit::TestCase
     assert_equal File.read(app.settings.views + '/data/people.xml.erb'), last_response.body
   end
   
+  test "connects to storage when setting present" do
+    connection_url = 'redis://localhost:1234'
+    app.config { set :storage, connection_url }
+    Copy::Storage.expects(:connect!).with(connection_url).once.returns(true)
+    get '/'
+    assert last_response.ok?
+  end
+  
   test "copy helper displays content from storage" do
-    Copy::Storage.expects(:connected?).returns(true)
+    Copy::Storage.expects(:connected?).twice.returns(true)
     Copy::Storage.expects(:get).with(:facts).returns("truth")
     
     get 'with_copy_helper'
@@ -80,7 +92,7 @@ class ServerTest < Test::Unit::TestCase
   end
   
   test "copy helper shows default text when content is not in storage" do
-    Copy::Storage.expects(:connected?).returns(true)
+    Copy::Storage.expects(:connected?).twice.returns(true)
     Copy::Storage.expects(:get).with(:facts).returns(nil)
     
     get 'with_copy_helper'
@@ -89,7 +101,7 @@ class ServerTest < Test::Unit::TestCase
   end
   
   test "copy helper shows default text when not connected" do
-    Copy::Storage.expects(:connected?).returns(false)
+    Copy::Storage.expects(:connected?).twice.returns(false)
     
     get 'with_copy_helper'
     assert last_response.ok?

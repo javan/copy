@@ -31,12 +31,18 @@ module Copy
       class_eval(&block)
     end
     
+    before do
+      if settings.respond_to?(:storage) && !Copy::Storage.connected?
+        Copy::Storage.connect!(settings.storage)
+      end
+    end
+    
     get '/admin/?' do
       "admin"
     end
     
     get '*' do
-      route = Copy::Router.new(params[:splat].to_s, settings.views)
+      route = Copy::Router.new(params[:splat].first, settings.views)
       if route.success?
         set_cache_control_header
         content_type(route.format)

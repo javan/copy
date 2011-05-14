@@ -16,7 +16,7 @@ module Copy
     end
     
     def self.connected?
-      ! @@storage.nil?
+      !defined?(@@storage).nil?
     end
     
     def self.get(name)
