@@ -8,11 +8,11 @@ module Copy
       end
       
       def get(name)
-        @redis.get("copy:content:#{name}")
+        @redis.hget("copy:content", name)
       end
       
       def set(name, content)
-        @redis.set("copy:content:#{name}", content)
+        @redis.hset("copy:content", name, content)
       end
     end
   end
