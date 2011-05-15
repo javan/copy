@@ -23,6 +23,7 @@
 
 #_copy,
 #_copy input,
+#_copy textarea,
 #_copy a {
   color: #333;
   font-family: monaco, menlo, monospace;
