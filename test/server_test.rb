@@ -124,25 +124,44 @@ class ServerAdminTest < Test::Unit::TestCase
   end
   
   test "GET /_copy protected when user/pass are set, but supplied incorrectly" do
-    app.config do
-      set :admin_user, 'super'
-      set :admin_password, 'secret'
-    end
-    
+    setup_auth 'good', 'girl'
     authorize 'bad', 'boy'
     get '/_copy'
     assert_equal 401, last_response.status
   end
   
   test "GET /_copy with valid credentials" do
-    app.config do
-      set :admin_user, 'super'
-      set :admin_password, 'secret'
-    end
-    
-    authorize 'super', 'secret'
+    authorize!
     get '/_copy'
     assert last_response.ok?
-    assert_match 'bookmarklet', last_response.body
+    assert_match 'Edit Copy', last_response.body
+  end
+  
+  test "GET /_copy.js" do
+    authorize!
+    get '/_copy.js'
+    assert last_response.ok?, last_response.errors
+    assert_match 'jQuery JavaScript Library', last_response.body
+  end
+  
+  test "GET /_copy/:name" do
+    Copy::Storage.stubs(:connected?).returns(true)
+    Copy::Storage.expects(:get).with('fun').returns('party')
+    
+    authorize!
+    get '/_copy/fun'
+    assert last_response.ok?, last_response.errors
+    assert_match "party</textarea>", last_response.body
+  end
+  
+  test "PUT /_copy/:name" do
+    Copy::Storage.stubs(:connected?).returns(true)
+    Copy::Storage.expects(:set).with('fun', '_party_').returns(true)
+    Copy::Storage.expects(:get).with('fun').returns('_party_')
+    
+    authorize!
+    put '/_copy/fun', :content => '_party_', :wrap_tag => 'article'
+    assert last_response.ok?, last_response.errors
+    assert_match %Q(<article class="_copy_editable" data-name="fun"><em>party</em></article>), last_response.body
   end
 end

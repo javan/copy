@@ -30,6 +30,23 @@ module Copy
         end
       end
       
+      def format_text(name, content, options = {})
+        original = content.dup
+        # Apply markdown formatting.
+        content = Redcarpet.new(content, :smart).to_html.chomp
+        
+        html_attrs = %Q(class="_copy_editable" data-name="#{name}")
+        
+        if original =~ /\n/ # content with newlines renders in a div
+          tag = options[:wrap_tag] || :div
+          %Q(<#{tag} #{html_attrs}>#{content}</#{tag}>)
+        else # single line content renders in a span without <p> tags
+          tag = options[:wrap_tag] || :span
+          content.gsub!(/<\/*p>/, '')
+          %Q(<#{tag} #{html_attrs}>#{content}</#{tag}>)
+        end
+      end
+      
       def copy(name, options = {}, &block)
         if !Copy::Storage.connected? || !(content = Copy::Storage.get(name))
           # Side-step the output buffer so we can capture the block, but not output it.
@@ -48,23 +65,8 @@ module Copy
           Copy::Storage.set(name, content) if Copy::Storage.connected?
         end
         
-        original = content.dup
-        # Apply markdown formatting.
-        content = Redcarpet.new(content, :smart).to_html.chomp
-        
-        html_attrs = %Q(class="_copy_editable" data-name="#{name}")
-        
-        if original =~ /\n/ # content with newlines renders in a div
-          tag = options[:wrap_tag] || :div
-          output = %Q(<#{tag} #{html_attrs}>#{content}</#{tag}>)
-        else # single line content renders in a span without <p> tags
-          tag = options[:wrap_tag] || :span
-          content.gsub!(/<\/*p>/, '')
-          output = %Q(<#{tag} #{html_attrs}>#{content}</#{tag}>)
-        end
-        
         # Append the output buffer.
-        @_out_buf << output
+        @_out_buf << format_text(name, content, options)
       end
     end
     
@@ -80,18 +82,26 @@ module Copy
     
     get '/_copy/?' do
       protected!
-      ERB.new(File.read(File.join(settings.root, 'admin', 'index.html.erb'))).result(self.send(:binding))
+      ERB.new(File.read(settings.root + '/admin/index.html.erb')).result(self.send(:binding))
+    end
+    
+    get '/_copy.js' do
+      protected!
+      content_type(:js)
+      ERB.new(File.read(settings.root + '/admin/index.js.erb')).result(self.send(:binding))
     end
     
     get '/_copy/:name' do
       protected!
+      @name = params[:name]
       @doc = Copy::Storage.get(params[:name])
-      ERB.new(File.read(File.join(settings.root, 'admin', 'edit.html.erb'))).result(self.send(:binding))
+      ERB.new(File.read(settings.root + '/admin/edit.html.erb')).result(self.send(:binding))
     end
     
     put '/_copy/:name' do
       protected!
       Copy::Storage.set(params[:name], params[:content])
+      format_text(params[:name], Copy::Storage.get(params[:name]), :wrap_tag => params[:wrap_tag])
     end
     
     get '*' do

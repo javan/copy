@@ -1,18 +1,12 @@
-<style type="text/css" media="screen">
-  #_copy * {
-    font-family: monaco;
-  }
-  
-  #_copy textarea {
-    height: 300px;
-    width: 500px;
-  }
-</style>
-
-<% if @doc %>
-  <div id="_copy">
+<div id="_copy">
+  <form class="_copy_edit_form" data-content-name="<%= @name %>" action="/_copy/<%= @name %>">
     <textarea name="content"><%= @doc %></textarea>
-  </div>
-<% else %>
-  <p>Couldn't find that one</p>
-<% end %>
+    <p class="_copy_footer _copy_footer_left">
+      <input class="_copy_submit" type="submit" value="Save" />
+      or <a class="_copy_cancel" href="#">cancel</a>
+    </p>
+    <p class="_copy_footer _copy_footer_right">
+      Format text with <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank">markdown</a>.
+    </p>
+  </form>
+</div>

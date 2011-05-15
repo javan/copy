@@ -1,0 +1,55 @@
+._copy_clickable {
+  background-color: yellow;
+  cursor: pointer;
+}
+
+#_copy {
+  background-color: #ccc;
+  border: 1px solid #a3a3a3;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 14px #474747;
+  -moz-box-shadow: 0px 0px 14px #474747;
+  box-shadow: 0px 0px 14px #474747;
+  width: 500px;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+#_copy {
+  overflow: hiden;
+}
+
+#_copy,
+#_copy input,
+#_copy a {
+  color: #333;
+  font-family: monaco;
+}
+
+#_copy p._copy_footer {
+  font-size: 11px;
+  margin: 10px 0;
+  padding: 0;
+}
+
+#_copy p._copy_footer_left {
+  float: left;
+}
+
+#_copy p._copy_footer_right {
+  float: right;
+  text-align: right;
+}
+
+#_copy a._copy_cancel {
+  text-decoration: underline;
+}
+
+#_copy textarea {
+  font-size: 13px;
+  height: 300px;
+  width: 500px;
+  padding: 5px;
+}

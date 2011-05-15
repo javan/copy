@@ -1,0 +1,53 @@
+<%= File.read(settings.root + '/admin/jquery.js') %>
+
+jQuery.noConflict();
+
+(function($) { 
+  $(function() {
+    function clickable() {
+      $('._copy_editable').addClass('_copy_clickable');
+    }
+    
+    function unclickable() {
+      $('._copy_editable').removeClass('_copy_clickable');
+    }
+    
+    $('head').append('<style><%= File.read(settings.root + '/admin/copy.css').gsub(/\n/, " \\\n") %></style>');
+
+    $('._copy_clickable').live('click', function(e) {
+      var copy = $(this);
+      unclickable();
+      $.ajax({
+        url: '_copy/'+copy.attr('data-name'),
+        success: function(html) {
+          $('body').prepend(html);
+          $('#_copy').css({ margin:'-'+($('#_copy').height() / 2)+'px 0 0 -'+($('#_copy').width() / 2)+'px' });
+          $('#_copy textarea').get(0).focus();
+        }
+      });
+    });
+    
+    $('._copy_cancel').live('click', function() {
+      $('#_copy').remove();
+      clickable();
+    });
+    
+    $('._copy_edit_form').live('submit', function() {
+      var form = $(this);
+      var original = $('[data-name="'+form.attr('data-content-name')+'"]');
+      form.find(':submit').attr('disabled', 'disabled');
+      $.ajax({
+        type: 'PUT',
+        url: form.attr('action'),
+        data: { content: form.find('textarea').val(), wrap_tag: original.get(0).tagName.toLowerCase() },
+        success: function(html) {
+          $('#_copy').remove();
+          original.replaceWith(html);
+        }
+      })
+      return false;
+    })
+    
+    clickable();
+  });
+})(jQuery);

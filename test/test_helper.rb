@@ -34,4 +34,16 @@ module CopyAppSetup
       set :views, File.dirname(File.expand_path(__FILE__)) + '/test_app/views'
     end
   end
+  
+  def setup_auth(user, pass)
+    app.config do
+      set :admin_user, user
+      set :admin_password, pass
+    end
+  end
+  
+  def authorize!
+    setup_auth 'super', 'secret'
+    authorize  'super', 'secret'
+  end
 end
