@@ -113,3 +113,36 @@ class ServerCopyHelperTest < Test::Unit::TestCase
     assert_match %Q(<span class="_copy_editable" data-name="headline">Important!</span>), last_response.body
   end
 end
+
+class ServerAdminTest < Test::Unit::TestCase
+  include CopyAppSetup
+  include Rack::Test::Methods
+  
+  test "GET /_copy is protected when no user/pass are set" do
+    get '/_copy'
+    assert_equal 401, last_response.status
+  end
+  
+  test "GET /_copy protected when user/pass are set, but supplied incorrectly" do
+    app.config do
+      set :admin_user, 'super'
+      set :admin_password, 'secret'
+    end
+    
+    authorize 'bad', 'boy'
+    get '/_copy'
+    assert_equal 401, last_response.status
+  end
+  
+  test "GET /_copy with valid credentials" do
+    app.config do
+      set :admin_user, 'super'
+      set :admin_password, 'secret'
+    end
+    
+    authorize 'super', 'secret'
+    get '/_copy'
+    assert last_response.ok?
+    assert_match 'bookmarklet', last_response.body
+  end
+end

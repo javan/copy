@@ -3,14 +3,25 @@ require 'erb'
 require 'redcarpet'
 
 module Copy 
-  class Server < Sinatra::Base
-    enable :sessions
-    
+  class Server < Sinatra::Base    
     set :views,  './views'
     set :public, './public'
     set :root, File.dirname(File.expand_path(__FILE__))
     
     helpers do
+      def protected!
+        unless authorized?
+          response['WWW-Authenticate'] = %(Basic realm="Copy Admin Area")
+          throw(:halt, [401, "Not authorized\n"])
+        end
+      end
+
+      def authorized?
+        return false unless settings.respond_to?(:admin_user) && settings.respond_to?(:admin_password)
+        @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+        @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [settings.admin_user, settings.admin_password]
+      end
+      
       def set_cache_control_header
         if settings.respond_to?(:cache_time) && settings.cache_time.is_a?(Numeric) && settings.cache_time > 0
           expires settings.cache_time, :public
@@ -67,16 +78,19 @@ module Copy
       end
     end
     
-    get '_copy/?' do
+    get '/_copy/?' do
+      protected!
       ERB.new(File.read(File.join(settings.root, 'admin', 'index.html.erb'))).result(self.send(:binding))
     end
     
-    get '_copy/:name' do
+    get '/_copy/:name' do
+      protected!
       @doc = Copy::Storage.get(params[:name])
       ERB.new(File.read(File.join(settings.root, 'admin', 'edit.html.erb'))).result(self.send(:binding))
     end
     
-    put '_copy/:name' do
+    put '/_copy/:name' do
+      protected!
       Copy::Storage.set(params[:name], params[:content])
     end
     
