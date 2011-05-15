@@ -1,8 +1,12 @@
 dir = File.dirname(File.expand_path(__FILE__))
 $LOAD_PATH.unshift dir + '/../lib'
 
-require 'test/unit'
 require 'rubygems'
+require 'test/unit'
+begin
+  require 'turn'
+rescue LoadError
+end
 require 'mocha'
 require 'copy'
 
@@ -17,5 +21,17 @@ class Test::Unit::TestCase
   
   def self.teardown(&block)
     define_method(:teardown, &block)
+  end
+end
+
+module CopyAppSetup
+  def app
+    Copy::Server
+  end
+  
+  def setup
+    app.config do
+      set :views, File.dirname(File.expand_path(__FILE__)) + '/sample_app/views'
+    end
   end
 end

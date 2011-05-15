@@ -2,17 +2,8 @@ require 'test_helper'
 require 'rack/test'
 
 class ServerTest < Test::Unit::TestCase
+  include CopyAppSetup
   include Rack::Test::Methods
-  
-  def app
-    Copy::Server
-  end
-  
-  setup do
-    app.config do
-      set :views, File.dirname(File.expand_path(__FILE__)) + '/sample_app/views'
-    end
-  end
   
   test "GET index" do
     get '/'
@@ -81,9 +72,14 @@ class ServerTest < Test::Unit::TestCase
     get '/'
     assert last_response.ok?
   end
+end
+
+class ServerCopyHelperTest < Test::Unit::TestCase
+  include CopyAppSetup
+  include Rack::Test::Methods
   
   test "copy helper displays content from storage" do
-    Copy::Storage.expects(:connected?).twice.returns(true)
+    Copy::Storage.stubs(:connected?).returns(true)
     Copy::Storage.expects(:get).with(:facts).returns("truth")
     
     get 'with_copy_helper'
@@ -91,13 +87,14 @@ class ServerTest < Test::Unit::TestCase
     assert_match "truth", last_response.body
   end
   
-  test "copy helper shows default text when content is not in storage" do
-    Copy::Storage.expects(:connected?).twice.returns(true)
+  test "copy helper saves defaults text when content is not in storage and renders it" do
+    Copy::Storage.stubs(:connected?).returns(true)
     Copy::Storage.expects(:get).with(:facts).returns(nil)
+    Copy::Storage.expects(:set).with(:facts, "_Default Text_\n").returns(true)
     
     get 'with_copy_helper'
-    assert last_response.ok?
-    assert_match "Default Text", last_response.body
+    assert last_response.ok?, last_response.errors
+    assert_match %Q(<div class="_copy_editable" data-name="facts"><p><em>Default Text</em></p></div>), last_response.body
   end
   
   test "copy helper shows default text when not connected" do
@@ -105,6 +102,14 @@ class ServerTest < Test::Unit::TestCase
     
     get 'with_copy_helper'
     assert last_response.ok?
-    assert_match "Default Text", last_response.body
+    assert_match %Q(<div class="_copy_editable" data-name="facts"><p><em>Default Text</em></p></div>), last_response.body
+  end
+  
+  test "copy helper renders single line content correctly" do
+    Copy::Storage.expects(:connected?).twice.returns(false)
+    
+    get 'with_copy_helper_one_line'
+    assert last_response.ok?
+    assert_match %Q(<span class="_copy_editable" data-name="headline">Important!</span>), last_response.body
   end
 end

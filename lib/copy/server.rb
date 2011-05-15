@@ -9,7 +9,6 @@ module Copy
     set :views,  './views'
     set :public, './public'
     set :root, File.dirname(File.expand_path(__FILE__))
-    set :text_formatting, :markdown
     
     helpers do
       def set_cache_control_header
@@ -21,7 +20,6 @@ module Copy
       end
       
       def copy(name, options = {}, &block)
-        options[:wrap_tag] ||= :div
         if !Copy::Storage.connected? || !(content = Copy::Storage.get(name))
           # Side-step the output buffer so we can capture the block, but not output it.
           @_out_buf, old_buffer = '', @_out_buf
@@ -39,13 +37,23 @@ module Copy
           Copy::Storage.set(name, content) if Copy::Storage.connected?
         end
         
+        original = content.dup
         # Apply markdown formatting.
-        if settings.text_formatting == :markdown
-          content = Redcarpet.new(content, :smart).to_html
+        content = Redcarpet.new(content, :smart).to_html.chomp
+        
+        html_attrs = %Q(class="_copy_editable" data-name="#{name}")
+        
+        if original =~ /\n/ # content with newlines renders in a div
+          tag = options[:wrap_tag] || :div
+          output = %Q(<#{tag} #{html_attrs}>#{content}</#{tag}>)
+        else # single line content renders in a span without <p> tags
+          tag = options[:wrap_tag] || :span
+          content.gsub!(/<\/*p>/, '')
+          output = %Q(<#{tag} #{html_attrs}>#{content}</#{tag}>)
         end
         
         # Append the output buffer.
-        @_out_buf << %Q(<#{options[:wrap_tag]} class="_copy_editable" data-name="#{name}">#{content}</#{options[:wrap_tag]}>)
+        @_out_buf << output
       end
     end
     
