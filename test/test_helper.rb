@@ -31,7 +31,7 @@ module CopyAppSetup
   
   def setup
     app.config do
-      set :views, File.dirname(File.expand_path(__FILE__)) + '/sample_app/views'
+      set :views, File.dirname(File.expand_path(__FILE__)) + '/test_app/views'
     end
   end
 end
