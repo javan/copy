@@ -1,5 +1,5 @@
 ._copy_clickable {
-  background-color: yellow;
+  background-color: #fcfc56;
   cursor: pointer;
 }
 
@@ -25,7 +25,7 @@
 #_copy input,
 #_copy a {
   color: #333;
-  font-family: monaco;
+  font-family: monaco, menlo, monospace;
 }
 
 #_copy p._copy_footer {

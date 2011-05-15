@@ -12,13 +12,13 @@ jQuery.noConflict();
       $('._copy_editable').removeClass('_copy_clickable');
     }
     
-    $('head').append('<style><%= File.read(settings.root + '/admin/copy.css').gsub(/\n/, " \\\n") %></style>');
+    $('head').append('<style style="text/css"><%= File.read(settings.root + '/admin/copy.css').gsub(/\n/, " \\\n") %></style>');
 
-    $('._copy_clickable').live('click', function(e) {
+    $('._copy_clickable').live('click', function() {
       var copy = $(this);
       unclickable();
       $.ajax({
-        url: '_copy/'+copy.attr('data-name'),
+        url: '/_copy/'+copy.attr('data-name'),
         success: function(html) {
           $('body').prepend(html);
           $('#_copy').css({ margin:'-'+($('#_copy').height() / 2)+'px 0 0 -'+($('#_copy').width() / 2)+'px' });

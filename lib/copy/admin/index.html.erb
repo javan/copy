@@ -1,1 +1,44 @@
-<p>Drag this to your bookmarks bar: <a href="javascript:void((function(){var%20cjs=document.createElement('script');cjs.setAttribute('src','/_copy.js?'+new%20Date().getTime());cjs.setAttribute('type','text/javascript');document.getElementsByTagName('head')[0].appendChild(cjs);})());">Edit Copy</a></p>
+<!doctype html> 
+<html> 
+<head> 
+  <meta charset="utf-8"> 
+  <title>Copy bookmarklet</title> 
+  <style> 
+    body {
+      font-family: monaco, menlo, monospace;
+      font-size: 12px;
+      color: #333;
+      padding: 40px;
+      margin: 0;
+    }
+    
+    p {
+      padding: 0;
+      margin: 0 0 40px 0;
+    }
+    
+    a {
+      color: #333;
+    }
+    
+    p.bookmarklet {
+      font-size: 16px;
+    }
+    
+    p.bookmarklet a {
+      background-color: #fcfc56;
+      text-decoration: none;
+      padding: 3px 6px;
+      margin: 0 3px;
+      border: 1px solid #eee;
+      border-radius: 3px;
+    }
+  </style> 
+</head> 
+<body>
+  <p class="bookmarklet">Drag this &rarr; <a href="javascript:void((function(){var%20cjs=document.createElement('script');cjs.setAttribute('src','/_copy.js?'+new%20Date().getTime());cjs.setAttribute('type','text/javascript');document.getElementsByTagName('head')[0].appendChild(cjs);})());">Edit Copy</a> to your bookmarks bar &uarr;</p>
+  
+  <p>After, <a href="/">return to your site</a> and click on that bookmark to make edits.</p>
+</body> 
+</html>
+
