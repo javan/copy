@@ -10,9 +10,7 @@ module Copy
     
         property :id,         Serial
         property :name,       String, :unique_index => true
-        property :content,    Text  
-        property :created_at, DateTime
-        property :updated_at, DateTime
+        property :content,    Text
       end
       
       def initialize(connection_url)
