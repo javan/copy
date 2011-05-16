@@ -37,7 +37,7 @@ module CopyAppSetup
   
   def setup_auth(user, pass)
     app.config do
-      set :admin_user, user
+      set :admin_username, user
       set :admin_password, pass
     end
   end

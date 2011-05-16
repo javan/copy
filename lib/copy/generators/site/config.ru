@@ -16,7 +16,7 @@ Copy::Server.config do
   # to use or set them as environment variables.
   # Heroku friendly: http://devcenter.heroku.com/articles/config-vars
   #
-  # set :admin_user,     ENV['COPY_USER']
+  # set :admin_username, ENV['COPY_USERNAME']
   # set :admin_password, ENV['COPY_PASSWORD']
   
   # Enter the URL to your data store.

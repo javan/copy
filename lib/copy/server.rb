@@ -17,9 +17,9 @@ module Copy
       end
 
       def authorized?
-        return false unless settings.respond_to?(:admin_user) && settings.respond_to?(:admin_password)
+        return false unless settings.respond_to?(:admin_username) && settings.respond_to?(:admin_password)
         @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-        @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [settings.admin_user, settings.admin_password]
+        @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [settings.admin_username, settings.admin_password]
       end
       
       def set_cache_control_header
