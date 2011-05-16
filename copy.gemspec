@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   
   s.add_dependency "sinatra", "~> 1.2.6"
   s.add_dependency "redcarpet"
-  s.add_dependency "choice"
   
   s.add_development_dependency "mocha"
 
