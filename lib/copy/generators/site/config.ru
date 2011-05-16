@@ -1,4 +1,9 @@
-require 'copy'
+begin
+  require 'copy'
+rescue LoadError
+  require 'rubygems'
+  require 'copy'
+end
 
 Copy::Server.config do
   # Sets a Cache-Control header for the duration specified.

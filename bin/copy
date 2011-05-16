@@ -1,9 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
-require 'optparse'
-require 'copy'
+begin
+  require 'copy'
+rescue LoadError
+  require 'rubygems'
+  require 'copy'
+end
+
 require 'copy/version'
+require 'optparse'
 
 OptionParser.new do |opts|
   opts.banner = "Usage: copy [options]"
