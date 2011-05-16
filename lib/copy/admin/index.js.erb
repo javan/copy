@@ -21,7 +21,7 @@ jQuery.noConflict();
       $('._copy_editable').removeClass('_copy_clickable');
     }
     
-    $('head').append('<style style="text/css"><%= File.read(settings.root + '/admin/copy.css').gsub(/\n/, " \\\n") %></style>');
+    $('head').append('<style><%= File.read(settings.root + '/admin/copy.css').gsub(/\n/, " \\\n") %></style>');
 
     $('._copy_clickable').live('click', function() {
       var copy = $(this);
