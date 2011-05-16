@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'optparse'
+require 'copy'
+require 'copy/version'
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: copy [options]"
+  opts.on('-n', '--new [DIR]', 'Create a new Copy site in DIR') do |dir|
+    dir ||= '.'
+    site = File.dirname(File.expand_path(__FILE__)) + '/../lib/copy/generators/site/'
+    puts `mkdir -p #{dir} && cp -Riv #{site} #{dir}`
+    puts "Done!"
+    exit(0)
+  end
+  opts.on('-v', '--version') { puts "Copy v#{Copy::VERSION}"; exit(0) }
+end.parse!
+
+puts "Run `copy -n DIR' to generate a new Copy site in DIR."
+puts "Run `copy --help' for all options."
+exit(0)
