@@ -39,6 +39,7 @@ jQuery.noConflict();
     $('._copy_cancel').live('click', function() {
       $('#_copy').remove();
       clickable();
+      return false;
     });
     
     $('._copy_edit_form').live('submit', function() {
