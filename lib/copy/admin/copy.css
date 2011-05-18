@@ -48,9 +48,13 @@
   text-decoration: underline;
 }
 
-#_copy textarea {
+#_copy textarea,
+#_copy input[type="text"] {
   font-size: 13px;
-  height: 300px;
   width: 490px;
   padding: 5px;
+}
+
+#_copy textarea { 
+  height: 300px;
 }

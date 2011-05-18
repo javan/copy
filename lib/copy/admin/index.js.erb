@@ -31,7 +31,7 @@ jQuery.noConflict();
         success: function(html) {
           $('body').prepend(html);
           $('#_copy').css({ margin:'-'+($('#_copy').height() / 2)+'px 0 0 -'+($('#_copy').width() / 2)+'px' });
-          $('#_copy textarea').get(0).focus();
+          $('#_copy [name="content"]').get(0).focus();
         }
       });
     });
@@ -49,7 +49,7 @@ jQuery.noConflict();
       $.ajax({
         type: 'PUT',
         url: form.attr('action'),
-        data: { content: form.find('textarea').val(), wrap_tag: original.get(0).tagName.toLowerCase() },
+        data: { content: form.find('[name="content"]').val(), wrap_tag: original.get(0).tagName.toLowerCase() },
         success: function(html) {
           $('#_copy').remove();
           original.replaceWith(html);

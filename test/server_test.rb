@@ -151,7 +151,13 @@ class ServerAdminTest < Test::Unit::TestCase
     authorize!
     get '/_copy/fun'
     assert last_response.ok?, last_response.errors
-    assert_match "party</textarea>", last_response.body
+    # Single line content renders in a text field
+    assert_match 'value="party"', last_response.body
+    
+    # Multiline renders in a textarea
+    Copy::Storage.expects(:get).with('fun').returns("party\n")
+    get '/_copy/fun'
+    assert_match "party\n</textarea>", last_response.body
   end
   
   test "PUT /_copy/:name" do
