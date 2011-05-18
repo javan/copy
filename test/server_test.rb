@@ -112,6 +112,12 @@ class ServerCopyHelperTest < Test::Unit::TestCase
     assert last_response.ok?
     assert_match %Q(<span class="_copy_editable" data-name="headline">Important!</span>), last_response.body
   end
+  
+  test "partial rendering" do
+    get 'renders_partials'
+    assert last_response.ok?, last_response.errors
+    assert_match "before\none\ntwo\nthree\nafter", last_response.body
+  end
 end
 
 class ServerAdminTest < Test::Unit::TestCase

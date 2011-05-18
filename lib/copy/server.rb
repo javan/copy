@@ -68,6 +68,12 @@ module Copy
         # Append the output buffer.
         @_out_buf << format_text(name, content, options)
       end
+      
+      def partial(template)
+        template_array = template.to_s.split('/')
+        template = template_array[0..-2].join('/') + "/_#{template_array[-1]}.#{@_route.format}"
+        send(@_route.renderer, template.to_sym, :layout => false)
+      end
     end
     
     def self.config(&block)
@@ -105,11 +111,11 @@ module Copy
     end
     
     get '*' do
-      route = Copy::Router.new(params[:splat].first, settings.views)
-      if route.success?
+      @_route = Copy::Router.new(params[:splat].first, settings.views)
+      if @_route.success?
         set_cache_control_header
-        content_type(route.format)
-        send(route.renderer, route.template, :layout => route.layout)
+        content_type(@_route.format)
+        send(@_route.renderer, @_route.template, :layout => @_route.layout)
       else
         not_found
       end
