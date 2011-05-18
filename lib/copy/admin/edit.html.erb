@@ -1,9 +1,9 @@
 <div id="_copy">
   <form class="_copy_edit_form" data-content-name="<%= @name %>" action="/_copy/<%= @name %>">
     <% if @doc =~ /\n/  %>
-      <textarea name="content"><%= @doc %></textarea>
+      <textarea name="content"><%=h @doc %></textarea>
     <% else %>
-      <input type="text" name="content" value="<%= @doc %>" />
+      <input type="text" name="content" value="<%=h @doc %>" />
     <% end %>
     <p class="_copy_footer _copy_footer_left">
       <input class="_copy_submit" type="submit" value="Save" />
