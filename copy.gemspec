@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Javan Makhmali"]
   s.email       = ["javan@javan.us"]
-  s.homepage    = ""
-  s.summary     = %q{Tiny CMS built with Sinatra}
-  s.description = %q{Serve mostly static pages with blocks of client-editable text.}
+  s.homepage    = "https://github.com/javan/copy"
+  s.summary     = %q{Tiny Sinatra-backed CMS}
+  s.description = %q{Serves mostly static pages with blocks of editable copy.}
 
   s.rubyforge_project = "copy"
   
@@ -18,6 +18,9 @@ Gem::Specification.new do |s|
   s.add_dependency "redcarpet"
   
   s.add_development_dependency "mocha"
+  s.add_development_dependency "redis"
+  s.add_development_dependency "mongo"
+  s.add_development_dependency "data_mapper"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
