@@ -55,4 +55,10 @@ Examples:
 
 ----
 
+### Editing copy on your live site
+
+Browse to `/_copy` and drag the "Edit Copy" link to your bookmarks bar. Return to your site, click the bookmark (you'll be prompted for your username and password) and then click on the highlighted text to edit it. That's it!
+
+----
+
 &copy; 2011 Javan Makhmali
