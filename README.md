@@ -1,4 +1,4 @@
-# Copy is a simple, Sinatra-based content management system.
+# Copy is a simple, Sinatra-based <strike>content</strike>copy management system.
 
 `$ gem install copy` and then generate a new site `$ copy -n mynewsite`
 
