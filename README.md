@@ -1,4 +1,4 @@
-# Copy is simple, Sinatra-based content management system.
+# Copy is a simple, Sinatra-based content management system.
 
 `$ gem install copy` and then generate a new site `$ copy -n mynewsite`
 
@@ -34,6 +34,10 @@ Copy lets you define blocks of editable text in your views.
     <% end %>
 
 The text provided in the block will be saved and can then be edited live on the site. All content is formatted with Markdown. [See demo](http://copy-demo.heroku.com) for a live example or [view the source](https://github.com/javan/copy-demo).
+
+Single line blocks will be edited in a text field as opposed to a textarea. Perfect for headlines.
+
+    <h1><% copy :title %>Like a boss!<% end %></h1>
 
 **Partials** can be rendered from any view with the `partial` helper. Their filenames are always prefixed with an underscore.
 
