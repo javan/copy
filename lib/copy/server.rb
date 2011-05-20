@@ -57,12 +57,16 @@ module Copy
           content = yield
           @_out_buf = old_buffer
           
+          # Remove newlines from the beginning
+          content.gsub!(/^\n/, '')
           # Get the first line from captured text.
           first_line = content.split("\n").first
           # Determine how much white space it has in front.
           white_space = first_line.match(/^(\s)*/)[0]
           # Remove that same amount of white space from the beginning of every line.
           content.gsub!(Regexp.new("^#{white_space}"), '')
+          # Remove all whitespace from the end, but keep the newline if present.
+          content.gsub!(/\s*$/, '') << "\n" if content =~ /\n/
           
           # Save the content so it can be edited.
           Copy::Storage.set(name, content) if Copy::Storage.connected?

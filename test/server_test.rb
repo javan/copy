@@ -113,6 +113,16 @@ class ServerCopyHelperTest < Test::Unit::TestCase
     assert_match %Q(<span class="_copy_editable" data-name="headline">Important!</span>), last_response.body
   end
   
+  test "copy helper indented in view" do
+    Copy::Storage.stubs(:connected?).returns(true)
+    Copy::Storage.expects(:get).with(:three).returns(nil)
+    Copy::Storage.expects(:set).with(:three, "three\n").returns(true)
+    
+    get 'indented'
+    assert last_response.ok?, last_response.errors
+    assert_match %Q(<div class="_copy_editable" data-name="three"><p>three</p></div>), last_response.body
+  end
+  
   test "partial rendering" do
     get 'renders_partials'
     assert last_response.ok?, last_response.errors
