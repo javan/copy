@@ -1,6 +1,6 @@
 <div id="_copy">
   <form class="_copy_edit_form" data-content-name="<%= @name %>" action="/_copy/<%= @name %>">
-    <% if @doc =~ /\n/  %>
+    <% if @doc =~ /\n/ || @doc.length > 40 %>
       <textarea name="content"><%=h @doc %></textarea>
     <% else %>
       <input type="text" name="content" value="<%=h @doc %>" />
