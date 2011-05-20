@@ -9,7 +9,7 @@ module Copy
         property :id,         Serial
         property :name,       String, :unique_index => true
         property :content,    Text
-      end
+      end if defined?(DataMapper::Resource)
       
       def initialize(connection_url)
         DataMapper.setup(:default, connection_url)
