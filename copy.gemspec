@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Javan Makhmali"]
   s.email       = ["javan@javan.us"]
   s.homepage    = "https://github.com/javan/copy"
-  s.summary     = %q{Tiny Sinatra-backed CMS}
+  s.summary     = %q{Simple, Sinatra-based CMS.}
   s.description = %q{Serves mostly static pages with blocks of editable copy.}
 
   s.rubyforge_project = "copy"
