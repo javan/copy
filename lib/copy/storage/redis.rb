@@ -1,5 +1,3 @@
-require 'redis'
-
 module Copy
   module Storage
     class Redis

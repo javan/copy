@@ -1,4 +1,3 @@
-require 'mongo'
 require 'uri'
 
 module Copy
