@@ -37,7 +37,7 @@ The text provided in the block will be saved and can then be edited live on the 
 
 Single line blocks will be edited in a text field as opposed to a textarea. Perfect for headlines.
 
-    <h1><% copy :title %>Like a boss!<% end %></h1>
+    <h1><% copy :title do %>Like a boss!<% end %></h1>
 
 **Partials** can be rendered from any view with the `partial` helper. Their filenames are always prefixed with an underscore.
 
