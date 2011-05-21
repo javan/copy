@@ -66,7 +66,7 @@ module Copy
           # Remove that same amount of white space from the beginning of every line.
           content.gsub!(Regexp.new("^#{white_space}"), '')
           # Remove all whitespace from the end, but keep the newline if present.
-          content.gsub!(/\s*$/, '') << "\n" if content =~ /\n/
+          content.gsub!(/\s*\z/, '') << "\n" if content =~ /\n/
           
           # Save the content so it can be edited.
           Copy::Storage.set(name, content) if Copy::Storage.connected?
