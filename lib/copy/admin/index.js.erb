@@ -36,6 +36,12 @@ jQuery.noConflict();
       });
     });
     
+    // Prevent navigating away if a link is clicked in an editable region
+    // and generally prevent interfering with launching the copy editer.
+    $('._copy_clickable *').live('click', function(event) {
+      event.preventDefault();
+    });
+    
     $('._copy_cancel').live('click', function() {
       $('#_copy').remove();
       clickable();
