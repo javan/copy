@@ -6,19 +6,17 @@
     ├── Gemfile              <- Uncomment the gems you need for storage.
     ├── config.ru            <- Configure storage, user, and password here.
     ├── public               <- The public root of your new site.
-    │   ├── favicon.ico         Ships with a few helpful defaults.
+    │   ├── favicon.ico      <- A blank favicon, replace with your own.
     │   ├── images
     │   ├── javascripts
-    │   │   └── main.js
-    │   ├── robots.txt
+    │   │   └── main.js      <- A good place for your basic scripts.
+    │   ├── robots.txt       <- Read file for details.
     │   └── stylesheets
-    │       └── main.css
+    │       └── main.css     <- Toss some CSS styles in here.
     └── views                <- Your views, layouts, and partials live here.
         ├── index.html.erb
-        └── layout.html.erb
+        └── layout.html.erb  <- Optional global layout file.
         
-The layout (`layout.html.erb`) yields to all the views. It's not required so delete it if your views contain full html documents.
-
 Copy automatically maps URLs to files in your `views` directory.
 
 * `/` &rarr; `index.html.erb`
@@ -65,4 +63,4 @@ Browse to `/_copy` and drag the "Edit Copy" link to your bookmarks bar. Return t
 
 ----
 
-&copy; 2011 Javan Makhmali
+[![Build Status](http://travis-ci.org/javan/copy.png)](http://travis-ci.org/javan/copy) &mdash; &copy; 2011 Javan Makhmali
