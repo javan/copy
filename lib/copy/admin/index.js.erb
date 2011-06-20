@@ -15,6 +15,7 @@ jQuery.noConflict();
     
     function clickable() {
       $('._copy_editable').addClass('_copy_clickable');
+      $('._copy_clickable:empty').text('(add copy)');
     }
     
     function unclickable() {
