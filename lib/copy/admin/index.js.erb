@@ -56,7 +56,8 @@ jQuery.noConflict();
         success: function(html) {
           $('body').prepend(html);
           $('#_copy').css({ margin:'-'+($('#_copy').height() / 2)+'px 0 0 -'+($('#_copy').width() / 2)+'px' });
-          $('#_copy textarea').focus();        }
+          $('#_copy textarea').focus();
+        }
       });
     });
     
