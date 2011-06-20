@@ -162,17 +162,11 @@ class ServerAdminTest < Test::Unit::TestCase
   
   test "GET /_copy/:name" do
     Copy::Storage.stubs(:connected?).returns(true)
-    Copy::Storage.expects(:get).with('fun').returns('"party"')
+    Copy::Storage.expects(:get).with('fun').returns("<b>party\n")
     
     authorize!
     get '/_copy/fun'
     assert last_response.ok?, last_response.errors
-    # Single line content renders in a text field
-    assert_match 'value="&quot;party&quot;"', last_response.body
-    
-    # Multiline renders in a textarea
-    Copy::Storage.expects(:get).with('fun').returns("<b>party\n")
-    get '/_copy/fun'
     assert_match "&lt;b&gt;party\n</textarea>", last_response.body
   end
   
