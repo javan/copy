@@ -19,6 +19,7 @@
 }
 
 #_copy {
+  font-size: 11px;
   overflow: hidden;
 }
 
@@ -30,32 +31,36 @@
   font-family: monaco, menlo, monospace;
 }
 
-#_copy p._copy_footer {
-  font-size: 11px;
+#_copy p {
   margin: 10px 0;
   padding: 0;
-}
-
-#_copy p._copy_footer_left {
-  float: left;
-}
-
-#_copy p._copy_footer_right {
-  float: right;
-  text-align: right;
 }
 
 #_copy a._copy_cancel {
   text-decoration: underline;
 }
 
-#_copy textarea,
-#_copy input[type="text"] {
+#_copy textarea {
+  display: none;
   font-size: 13px;
   width: 490px;
   padding: 5px;
+  -webkit-transition: height 0.2s ease-out;
+  -moz-transition: height 0.2s ease-out;
+  -o-transition: height 0.2s ease-out;
+  transition: height 0.2s ease-out;
 }
 
-#_copy textarea { 
+#_copy textarea._copy_small {
+  resize: none;
+  overflow: hidden;
+  height: 18px;
+}
+
+#_copy textarea._copy_medium {
+  height: 150px;
+}
+
+#_copy textarea._copy_large { 
   height: 300px;
 }

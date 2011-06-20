@@ -21,8 +21,32 @@ jQuery.noConflict();
       $('._copy_editable').removeClass('_copy_clickable');
     }
     
+    // Apply sizing rules (css classes) to the textarea based
+    // on the length of the content and presence of newlines.
+    function resizeTextarea() {
+      var textarea = $('#_copy textarea');
+      var content = textarea.val();
+      
+      textarea.removeClass('_copy_small _copy_medium _copy_large');
+      
+      if (/\n/.test(content) || content.length > 55) {
+        if (content.length > 300) {
+          textarea.addClass('_copy_large');
+        } else {
+          textarea.addClass('_copy_medium');
+        }
+      } else {
+        textarea.addClass('_copy_small');
+      }
+      
+      textarea.show();
+    }
+    $('#_copy textarea').live('keydown keyup keypress change paste focus', resizeTextarea);
+    
+    // Apply the styles.
     $('head').append('<style><%= File.read(settings.root + '/admin/copy.css').gsub(/\n/, " \\\n") %></style>');
-
+    
+    // When a clickable region is clicked, load the content into the editor.
     $('._copy_clickable').live('click', function() {
       var copy = $(this);
       unclickable();
@@ -31,8 +55,7 @@ jQuery.noConflict();
         success: function(html) {
           $('body').prepend(html);
           $('#_copy').css({ margin:'-'+($('#_copy').height() / 2)+'px 0 0 -'+($('#_copy').width() / 2)+'px' });
-          $('#_copy [name="content"]').get(0).focus();
-        }
+          $('#_copy textarea').focus();        }
       });
     });
     
@@ -42,12 +65,14 @@ jQuery.noConflict();
       event.preventDefault();
     });
     
-    $('._copy_cancel').live('click', function() {
+    // Hide the editor and make everything clickable if cancel is pressed.
+    $('._copy_cancel').live('click', function(event) {
+      event.preventDefault();
       $('#_copy').remove();
       clickable();
-      return false;
     });
     
+    // Save the content when the submit button is pressed.
     $('._copy_edit_form').live('submit', function() {
       var form = $(this);
       var original = $('[data-name="'+form.attr('data-content-name')+'"]');
@@ -55,7 +80,7 @@ jQuery.noConflict();
       $.ajax({
         type: 'PUT',
         url: form.attr('action'),
-        data: { content: form.find('[name="content"]').val(), wrap_tag: original.get(0).tagName.toLowerCase() },
+        data: { content: form.find('textarea').val(), wrap_tag: original.get(0).tagName.toLowerCase() },
         success: function(html) {
           $('#_copy').remove();
           original.replaceWith(html);
@@ -64,6 +89,7 @@ jQuery.noConflict();
       return false;
     })
     
+    // Make the editable regions clickable.
     clickable();
     window._copy_initialized = true;
   });
