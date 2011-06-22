@@ -1,4 +1,5 @@
 <%= File.read(settings.root + '/admin/jquery.js') %>
+<%= File.read(settings.root + '/admin/jquery-ui.js') %>
 
 jQuery.noConflict();
 
@@ -58,8 +59,11 @@ jQuery.noConflict();
           $('body').prepend(html);
           resizeTextarea();
           // Center the editor on the screen.
-          $('#_copy').css({ margin:'-'+($('#_copy').height() / 2)+'px 0 0 -'+($('#_copy').width() / 2)+'px' });
-          $('#_copy textarea').focus();
+          // Make it draggable so you can move it around.
+          // Focus on the texarea for convenience.
+          $('#_copy').css({ margin:'-'+($('#_copy').height() / 2)+'px 0 0 -'+($('#_copy').width() / 2)+'px' })
+                     .draggable()
+                     .find('textarea').focus();
         }
       });
     });
