@@ -54,7 +54,10 @@ jQuery.noConflict();
       $.ajax({
         url: '/_copy/'+copy.attr('data-name'),
         success: function(html) {
+          // Attach the editor and resize the text area.
           $('body').prepend(html);
+          resizeTextarea();
+          // Center the editor on the screen.
           $('#_copy').css({ margin:'-'+($('#_copy').height() / 2)+'px 0 0 -'+($('#_copy').width() / 2)+'px' });
           $('#_copy textarea').focus();
         }
