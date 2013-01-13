@@ -16,7 +16,7 @@
     └── views                <- Your views, layouts, and partials live here.
         ├── index.html.erb
         └── layout.html.erb  <- Optional global layout file.
-        
+
 Copy automatically maps URLs to files in your `views` directory.
 
 * `/` &rarr; `index.html.erb`
@@ -63,4 +63,4 @@ Browse to `/_copy` and drag the "Edit Copy" link to your bookmarks bar. Return t
 
 ----
 
-[![Build Status](http://travis-ci.org/javan/copy.png)](http://travis-ci.org/javan/copy) &mdash; &copy; 2011 Javan Makhmali
+[![Build Status](http://travis-ci.org/javan/copy.png)](http://travis-ci.org/javan/copy) &mdash; &copy; 2013 Javan Makhmali
