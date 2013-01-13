@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   s.description = %q{Serves mostly static pages with blocks of editable copy.}
 
   s.rubyforge_project = "copy"
-  
+
   s.add_dependency "sinatra", "~> 1.2.6"
-  s.add_dependency "redcarpet"
-  
+  s.add_dependency "redcarpet", "~> 2.2.2"
+
   s.add_development_dependency "mocha"
   s.add_development_dependency "rake"
   s.add_development_dependency "rack-test"
