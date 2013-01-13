@@ -5,7 +5,7 @@ require 'redcarpet'
 module Copy
   class Server < Sinatra::Base
     set :views,  './views'
-    set :public, './public'
+    set :public_folder, './public'
     set :root, File.dirname(File.expand_path(__FILE__))
 
     helpers do

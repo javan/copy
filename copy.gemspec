@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "copy"
 
-  s.add_dependency "sinatra", "~> 1.2.6"
+  s.add_dependency "sinatra", "~> 1.3.3"
   s.add_dependency "redcarpet", "~> 2.2.2"
 
   s.add_development_dependency "mocha"
